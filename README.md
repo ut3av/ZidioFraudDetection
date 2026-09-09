@@ -4,6 +4,25 @@ A comprehensive Machine Learning system and intelligence dashboard designed for 
 
 ![FraudShield AI Enterprise Intelligence Platform](outputs/figures/hero_banner.jpg)
 
+<div align="center">
+
+[![Python](https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-1.3%2B-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.28%2B-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io/)
+[![Plotly](https://img.shields.io/badge/Plotly-5.18%2B-3F4F75?style=for-the-badge&logo=plotly&logoColor=white)](https://plotly.com/)
+[![Pandas](https://img.shields.io/badge/Pandas-2.0%2B-150458?style=for-the-badge&logo=pandas&logoColor=white)](https://pandas.pydata.org/)
+[![NumPy](https://img.shields.io/badge/NumPy-1.24%2B-013243?style=for-the-badge&logo=numpy&logoColor=white)](https://numpy.org/)
+
+[![Random Forest](https://img.shields.io/badge/Model-Random%20Forest%20(300%20Trees)-0284C7?style=flat-square)](https://scikit-learn.org/)
+[![Accuracy](https://img.shields.io/badge/Accuracy-93.53%25-059669?style=flat-square)](reports/model_evaluation.txt)
+[![Precision](https://img.shields.io/badge/Fraud%20Precision-99.68%25-0284C7?style=flat-square)](reports/model_evaluation.txt)
+[![Recall](https://img.shields.io/badge/Fraud%20Recall-80.11%25-0284C7?style=flat-square)](reports/model_evaluation.txt)
+[![ROC-AUC](https://img.shields.io/badge/ROC--AUC-0.9787-6366F1?style=flat-square)](reports/model_evaluation.txt)
+[![Build](https://img.shields.io/badge/Build-Passing-10B981?style=flat-square)](#)
+[![License](https://img.shields.io/badge/License-MIT%20%2F%20Zidio-334155?style=flat-square)](#)
+
+</div>
+
 ---
 
 ## Table of Contents
