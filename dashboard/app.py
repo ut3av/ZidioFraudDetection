@@ -1,8 +1,6 @@
 """
 Financial Fraud Detection System - Enterprise Intelligence Dashboard
-Sky Blue Light Theme Edition
-Features high-performance animated cards, interactive Plotly visualizations,
-live risk simulation, and batch auditing in a modern Sky Blue light aesthetic.
+Sky Blue Light Theme Edition with Landing Portal Overview
 """
 
 import os
@@ -50,12 +48,12 @@ st.markdown("""
         --slate-100: #f1f5f9;
         --slate-200: #e2e8f0;
         --slate-300: #cbd5e1;
+        --slate-600: #475569;
         --slate-700: #334155;
         --slate-800: #1e293b;
         --slate-900: #0f172a;
         --accent-emerald: #10b981;
         --accent-rose: #f43f5e;
-        --card-bg: #ffffff;
     }
 
     * {
@@ -74,12 +72,12 @@ st.markdown("""
 
     /* Top Sky Blue Hero Banner */
     .header-container {
-        padding: 26px 32px;
+        padding: 28px 36px;
         background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 60%, #38bdf8 100%);
-        border-radius: 16px;
+        border-radius: 18px;
         color: #ffffff;
         margin-bottom: 24px;
-        box-shadow: 0 10px 25px -5px rgba(14, 165, 233, 0.35), 0 8px 10px -6px rgba(14, 165, 233, 0.2);
+        box-shadow: 0 12px 28px -6px rgba(14, 165, 233, 0.35), 0 8px 10px -6px rgba(14, 165, 233, 0.2);
         position: relative;
         overflow: hidden;
     }
@@ -89,15 +87,15 @@ st.markdown("""
         position: absolute;
         top: -60%;
         right: -10%;
-        width: 300px;
-        height: 300px;
-        background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+        width: 320px;
+        height: 320px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.22) 0%, transparent 70%);
         border-radius: 50%;
         pointer-events: none;
     }
 
     .header-title {
-        font-size: 26px;
+        font-size: 28px;
         font-weight: 800;
         letter-spacing: -0.02em;
         color: #ffffff;
@@ -109,6 +107,54 @@ st.markdown("""
         color: #e0f2fe;
         margin: 0;
         font-weight: 400;
+        max-width: 800px;
+        line-height: 1.5;
+    }
+
+    /* Landing Hero Feature Cards */
+    .hero-feature-card {
+        background: #ffffff;
+        border: 1px solid var(--sky-200);
+        border-radius: 16px;
+        padding: 24px;
+        transition: all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+        height: 100%;
+        box-shadow: 0 4px 16px -2px rgba(14, 165, 233, 0.08);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-feature-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--sky-500);
+        box-shadow: 0 16px 32px -4px rgba(14, 165, 233, 0.22);
+    }
+
+    .hero-badge {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        padding: 4px 10px;
+        border-radius: 6px;
+        background-color: var(--sky-100);
+        color: var(--sky-800);
+        margin-bottom: 12px;
+    }
+
+    .hero-card-title {
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--slate-900);
+        margin: 0 0 8px 0;
+    }
+
+    .hero-card-desc {
+        font-size: 13px;
+        color: var(--slate-600);
+        line-height: 1.5;
+        margin: 0;
     }
 
     /* Modern Sky Blue Light Animated Cards */
@@ -261,13 +307,13 @@ st.markdown("""
         border-right: 1px solid var(--sky-200);
     }
 
-    /* Container Box */
+    /* White Glass Panel Container */
     .glass-panel {
         background: #ffffff;
         border: 1px solid var(--sky-200);
-        border-radius: 14px;
-        padding: 20px;
-        margin-bottom: 20px;
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 24px;
         box-shadow: 0 4px 16px -2px rgba(14, 165, 233, 0.06);
     }
 </style>
@@ -298,7 +344,7 @@ PLOTLY_LIGHT_TEMPLATE = {
         },
         "legend": {
             "font": {"color": "#0f172a"},
-            "bgcolor": "rgba(255, 255, 255, 0.8)",
+            "bgcolor": "rgba(255, 255, 255, 0.85)",
             "bordercolor": "rgba(186, 230, 253, 0.8)",
             "borderwidth": 1
         },
@@ -363,6 +409,7 @@ with st.sidebar:
     page = st.sidebar.radio(
         "Navigation",
         [
+            "Overview & Landing Portal",
             "Executive Command Center",
             "Real-Time Risk Simulator",
             "Visual Analytics & Patterns",
@@ -385,7 +432,7 @@ with st.sidebar:
             <span style="color: #0f172a; font-weight: 600;">300 Trees</span>
         </div>
         <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px;">
-            <span style="color: #64748b;">Status</span>
+            <span style="color: #64748b;">System Status</span>
             <span style="color: #059669; font-weight: 600;">Operational</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 12px;">
@@ -396,10 +443,151 @@ with st.sidebar:
     """, unsafe_allow_html=True)
 
 # --------------------------------------------------
+# MODULE 0: OVERVIEW & LANDING PORTAL
+# --------------------------------------------------
+
+if page == "Overview & Landing Portal":
+    # Hero Section
+    st.markdown("""
+    <div class="header-container">
+        <h1 class="header-title">Next-Generation AI Financial Fraud Defense</h1>
+        <p class="header-subtitle">
+            Enterprise-grade machine learning architecture designed to intercept fraudulent transactions,
+            safeguard institutional liquidity, and provide explainable risk intelligence in sub-5ms latency.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Key Performance Metric Highlights
+    c1, c2, c3, c4 = st.columns(4)
+    with c1:
+        st.markdown("""
+        <div class="stat-card">
+            <div class="stat-label">Model Accuracy</div>
+            <div class="stat-value">93.53%</div>
+            <div class="stat-delta delta-positive">High Baseline Performance</div>
+        </div>
+        """, unsafe_allow_html=True)
+    with c2:
+        st.markdown("""
+        <div class="stat-card">
+            <div class="stat-label">Fraud Precision</div>
+            <div class="stat-value">99.68%</div>
+            <div class="stat-delta delta-positive">Minimal False Alarms (0.12%)</div>
+        </div>
+        """, unsafe_allow_html=True)
+    with c3:
+        st.markdown("""
+        <div class="stat-card">
+            <div class="stat-label">Fraud Capture Recall</div>
+            <div class="stat-value">80.11%</div>
+            <div class="stat-delta delta-neutral">12,871 Captured Events</div>
+        </div>
+        """, unsafe_allow_html=True)
+    with c4:
+        st.markdown("""
+        <div class="stat-card">
+            <div class="stat-label">ROC-AUC Benchmark</div>
+            <div class="stat-value">0.9787</div>
+            <div class="stat-delta delta-positive">Superior Class Discrimination</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # Core Value Propositions
+    st.markdown('<div class="section-header">Core Capabilities & System Modules</div>', unsafe_allow_html=True)
+    f1, f2, f3, f4 = st.columns(4)
+
+    with f1:
+        st.markdown("""
+        <div class="hero-feature-card">
+            <div class="hero-badge">Real-Time Defense</div>
+            <h4 class="hero-card-title">Dynamic Risk Simulator</h4>
+            <p class="hero-card-desc">Simulate and score incoming transactions across 29 behavioral vectors with instant multi-zone gauge and radar charts.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with f2:
+        st.markdown("""
+        <div class="hero-feature-card">
+            <div class="hero-badge">Behavioral Analytics</div>
+            <h4 class="hero-card-title">3D Feature Interaction</h4>
+            <p class="hero-card-desc">Interactive multidimensional space mapping transaction volume, account liquidity, and velocity trends.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with f3:
+        st.markdown("""
+        <div class="hero-feature-card">
+            <div class="hero-badge">Mass Auditing</div>
+            <h4 class="hero-card-title">Batch Forensic Auditor</h4>
+            <p class="hero-card-desc">Ingest enterprise transaction CSV streams for automatic mass risk scoring, filtering, and exportable forensics.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with f4:
+        st.markdown("""
+        <div class="hero-feature-card">
+            <div class="hero-badge">Transparency</div>
+            <h4 class="hero-card-title">Model Forensics</h4>
+            <p class="hero-card-desc">Inspect confusion matrices, feature importance rankings, and precision-recall trade-offs with total transparency.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # Interactive Sandbox on Landing Page
+    st.markdown('<div class="section-header">Instant Fraud Risk Assessment Sandbox</div>', unsafe_allow_html=True)
+    with st.container():
+        st.markdown("""
+        <div style="background: #ffffff; border: 1px solid #bae6fd; border-radius: 14px; padding: 20px; margin-bottom: 20px;">
+            <div style="font-size: 13px; color: #475569; margin-bottom: 14px;">Adjust sample sliders below to test the live Random Forest decision pipeline right from this portal.</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        sc1, sc2, sc3 = st.columns(3)
+        with sc1:
+            q_amount = st.slider("Transaction Amount ($)", min_value=1.0, max_value=2000.0, value=180.0, step=10.0)
+        with sc2:
+            q_balance = st.slider("Account Balance ($)", min_value=10.0, max_value=25000.0, value=1200.0, step=100.0)
+        with sc3:
+            q_daily = st.slider("Daily Transaction Frequency", min_value=1, max_value=30, value=8, step=1)
+
+        if model is not None and scaler is not None and df_processed is not None:
+            # Construct quick test vector
+            q_dict = {
+                "Transaction_Amount": q_amount,
+                "Account_Balance": q_balance,
+                "Previous_Fraudulent_Activity": 0,
+                "Daily_Transaction_Count": q_daily,
+                "Card_Age": 365,
+                "Transaction_Year": 2024,
+                "Transaction_Month": 8,
+                "Transaction_Day": 15,
+                "Transaction_DayOfWeek": 3,
+                "Amount_to_Balance_Ratio": q_amount / (q_balance + 1),
+                "High_Amount_Flag": int(q_amount > 250.0),
+                "High_Transaction_Frequency": int(q_daily > 7)
+            }
+            q_df = pd.DataFrame([q_dict])
+            expected_cols = [c for c in df_processed.columns if c != "Fraud_Label"]
+            q_aligned = q_df.reindex(columns=expected_cols, fill_value=0)
+            q_scaled = scaler.transform(q_aligned)
+            q_prob = model.predict_proba(q_scaled)[0][1] * 100
+
+            res_col1, res_col2 = st.columns([1, 2])
+            with res_col1:
+                st.metric("Estimated Fraud Probability", f"{q_prob:.1f}%")
+            with res_col2:
+                if q_prob >= 70:
+                    st.markdown("<div class='result-banner result-fraud' style='margin: 0;'><span style='color: #e11d48; font-weight: 700;'>High Anomaly Risk: Flagged for Review</span></div>", unsafe_allow_html=True)
+                elif q_prob >= 30:
+                    st.markdown("<div class='result-banner' style='background: #fffbeb; border: 1px solid #fde68a; margin: 0;'><span style='color: #d97706; font-weight: 700;'>Moderate Risk: Secondary Verification Required</span></div>", unsafe_allow_html=True)
+                else:
+                    st.markdown("<div class='result-banner result-legit' style='margin: 0;'><span style='color: #059669; font-weight: 700;'>Low Risk: Standard Transaction Approved</span></div>", unsafe_allow_html=True)
+
+# --------------------------------------------------
 # MODULE 1: EXECUTIVE COMMAND CENTER
 # --------------------------------------------------
 
-if page == "Executive Command Center":
+elif page == "Executive Command Center":
     st.markdown("""
     <div class="header-container">
         <h1 class="header-title">Executive Command Center</h1>
