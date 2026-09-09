@@ -117,17 +117,18 @@ The Random Forest Classifier (configured with 300 estimators and balanced class 
 
 | Metric | Score |
 | :--- | :--- |
-| **Accuracy** | 92.90% |
-| **Precision (Fraud Class)** | 95.04% |
-| **Recall (Fraud Class)** | 82.18% |
-| **F1-Score** | 0.8814 |
-| **Macro Average F1** | 0.9200 |
+| **Accuracy** | 93.53% |
+| **Precision (Fraud Class)** | 99.68% |
+| **Recall (Fraud Class)** | 80.11% |
+| **F1-Score** | 0.8883 |
+| **ROC-AUC Score** | 0.9787 |
+| **Macro Average F1** | 0.9210 |
 
 ### Confusion Matrix
 ```
                   Predicted Legitimate    Predicted Fraud
-Actual Legitimate        33,244                 689
-Actual Fraud              2,863              13,204
+Actual Legitimate        33,892                  41
+Actual Fraud              3,196              12,871
 ```
 
 ---

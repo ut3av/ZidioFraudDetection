@@ -1,7 +1,8 @@
 """
 Financial Fraud Detection System - Enterprise Intelligence Dashboard
-A modern, production-grade Streamlit web application with animated cards,
-interactive Plotly visualizations, live risk simulation, and batch auditing.
+Sky Blue Light Theme Edition
+Features high-performance animated cards, interactive Plotly visualizations,
+live risk simulation, and batch auditing in a modern Sky Blue light aesthetic.
 """
 
 import os
@@ -21,13 +22,13 @@ from pathlib import Path
 # --------------------------------------------------
 
 st.set_page_config(
-    page_title="FraudShield AI - Financial Fraud Detection Platform",
+    page_title="FraudShield AI - Financial Fraud Intelligence Platform",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 # --------------------------------------------------
-# HIGH-END MODERN CSS STYLING & ANIMATIONS
+# SKY BLUE LIGHT THEME CSS STYLING & ANIMATIONS
 # --------------------------------------------------
 
 st.markdown("""
@@ -35,21 +36,26 @@ st.markdown("""
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
     :root {
-        --bg-primary: #0b0f19;
-        --bg-card: #131b2e;
-        --bg-card-hover: #1a243d;
-        --border-color: rgba(255, 255, 255, 0.08);
-        --border-hover: rgba(99, 102, 241, 0.4);
-        --accent-blue: #3b82f6;
-        --accent-indigo: #6366f1;
-        --accent-purple: #8b5cf6;
+        --sky-50: #f0f9ff;
+        --sky-100: #e0f2fe;
+        --sky-200: #bae6fd;
+        --sky-300: #7dd3fc;
+        --sky-400: #38bdf8;
+        --sky-500: #0ea5e9;
+        --sky-600: #0284c7;
+        --sky-700: #0369a1;
+        --sky-800: #075985;
+        --sky-900: #0c4a6e;
+        --slate-50: #f8fafc;
+        --slate-100: #f1f5f9;
+        --slate-200: #e2e8f0;
+        --slate-300: #cbd5e1;
+        --slate-700: #334155;
+        --slate-800: #1e293b;
+        --slate-900: #0f172a;
         --accent-emerald: #10b981;
         --accent-rose: #f43f5e;
-        --accent-amber: #f59e0b;
-        --accent-cyan: #06b6d4;
-        --text-primary: #f8fafc;
-        --text-secondary: #94a3b8;
-        --text-muted: #64748b;
+        --card-bg: #ffffff;
     }
 
     * {
@@ -60,33 +66,34 @@ st.markdown("""
         font-family: 'JetBrains Mono', monospace !important;
     }
 
-    /* Animated Background & Main Viewport */
+    /* Main Viewport Background */
     .stApp {
-        background-color: var(--bg-primary);
-        color: var(--text-primary);
+        background-color: #f8fafc;
+        color: var(--slate-900);
     }
 
-    /* Top Banner Gradient */
+    /* Top Sky Blue Hero Banner */
     .header-container {
-        padding: 24px 32px;
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%);
-        border: 1px solid var(--border-color);
+        padding: 26px 32px;
+        background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 60%, #38bdf8 100%);
         border-radius: 16px;
-        backdrop-filter: blur(12px);
+        color: #ffffff;
         margin-bottom: 24px;
-        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 10px 25px -5px rgba(14, 165, 233, 0.35), 0 8px 10px -6px rgba(14, 165, 233, 0.2);
         position: relative;
         overflow: hidden;
     }
 
-    .header-container::before {
+    .header-container::after {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: linear-gradient(90deg, #3b82f6, #6366f1, #ec4899, #10b981);
+        top: -60%;
+        right: -10%;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
     }
 
     .header-title {
@@ -99,60 +106,54 @@ st.markdown("""
 
     .header-subtitle {
         font-size: 14px;
-        color: var(--text-secondary);
+        color: #e0f2fe;
         margin: 0;
         font-weight: 400;
     }
 
-    /* Modern Glassmorphic Animated Cards */
+    /* Modern Sky Blue Light Animated Cards */
     .stat-card {
-        background: linear-gradient(145deg, rgba(26, 36, 61, 0.6) 0%, rgba(19, 27, 46, 0.8) 100%);
-        border: 1px solid var(--border-color);
+        background: #ffffff;
+        border: 1px solid var(--sky-200);
         border-radius: 14px;
         padding: 20px 22px;
-        backdrop-filter: blur(10px);
-        transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
         overflow: hidden;
         margin-bottom: 16px;
+        box-shadow: 0 4px 16px -2px rgba(14, 165, 233, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
     }
 
     .stat-card:hover {
         transform: translateY(-4px);
-        border-color: var(--border-hover);
-        box-shadow: 0 16px 32px -8px rgba(99, 102, 241, 0.25), 0 0 0 1px rgba(99, 102, 241, 0.2);
+        border-color: var(--sky-500);
+        box-shadow: 0 14px 28px -4px rgba(14, 165, 233, 0.22), 0 0 0 1px var(--sky-400);
     }
 
-    .stat-card::after {
+    .stat-card::before {
         content: '';
         position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
-        opacity: 0;
-        transition: opacity 0.35s ease;
-        pointer-events: none;
-    }
-
-    .stat-card:hover::after {
-        opacity: 1;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(180deg, var(--sky-500), var(--sky-300));
+        border-radius: 4px 0 0 4px;
     }
 
     .stat-label {
         font-size: 12px;
-        font-weight: 600;
+        font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        color: var(--text-muted);
+        color: var(--sky-800);
         margin-bottom: 8px;
     }
 
     .stat-value {
         font-size: 28px;
         font-weight: 800;
-        color: #ffffff;
+        color: var(--slate-900);
         letter-spacing: -0.02em;
         line-height: 1.1;
     }
@@ -168,9 +169,9 @@ st.markdown("""
 
     .delta-positive { color: var(--accent-emerald); }
     .delta-negative { color: var(--accent-rose); }
-    .delta-neutral { color: var(--accent-cyan); }
+    .delta-neutral { color: var(--sky-600); }
 
-    /* Custom Result Badges */
+    /* Result Banners */
     .result-banner {
         border-radius: 14px;
         padding: 20px 24px;
@@ -178,49 +179,49 @@ st.markdown("""
         display: flex;
         align-items: center;
         justify-content: space-between;
-        animation: fadeIn 0.4s ease-out;
+        animation: fadeIn 0.35s ease-out;
     }
 
     @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(8px); }
+        from { opacity: 0; transform: translateY(6px); }
         to { opacity: 1; transform: translateY(0); }
     }
 
     .result-fraud {
-        background: linear-gradient(135deg, rgba(244, 63, 94, 0.15) 0%, rgba(190, 18, 60, 0.25) 100%);
-        border: 1px solid rgba(244, 63, 94, 0.4);
-        box-shadow: 0 10px 30px -5px rgba(244, 63, 94, 0.2);
+        background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
+        border: 1px solid #fecdd3;
+        box-shadow: 0 8px 20px -4px rgba(244, 63, 94, 0.15);
     }
 
     .result-legit {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.25) 100%);
-        border: 1px solid rgba(16, 185, 129, 0.4);
-        box-shadow: 0 10px 30px -5px rgba(16, 185, 129, 0.2);
+        background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        border: 1px solid #bbf7d0;
+        box-shadow: 0 8px 20px -4px rgba(16, 185, 129, 0.15);
     }
 
     .result-title {
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 800;
         margin: 0;
         letter-spacing: -0.01em;
     }
 
-    .result-fraud .result-title { color: #fda4af; }
-    .result-legit .result-title { color: #6ee7b7; }
+    .result-fraud .result-title { color: #e11d48; }
+    .result-legit .result-title { color: #059669; }
 
     .result-desc {
         font-size: 13px;
-        color: var(--text-secondary);
+        color: var(--slate-700);
         margin: 4px 0 0 0;
     }
 
     /* Section Headers */
     .section-header {
-        font-size: 16px;
+        font-size: 15px;
         font-weight: 700;
         letter-spacing: -0.01em;
-        color: #ffffff;
-        margin: 24px 0 16px 0;
+        color: var(--slate-800);
+        margin: 22px 0 14px 0;
         display: flex;
         align-items: center;
         gap: 8px;
@@ -231,70 +232,80 @@ st.markdown("""
         display: inline-block;
         width: 4px;
         height: 16px;
-        background: var(--accent-indigo);
+        background: var(--sky-600);
         border-radius: 2px;
     }
 
     /* Custom UI Button Styling */
     .stButton > button {
-        background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+        background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
         color: #ffffff;
         font-weight: 600;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid #0284c7;
         border-radius: 10px;
         padding: 10px 20px;
-        transition: all 0.25s ease;
-        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        transition: all 0.22s ease;
+        box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
     }
 
     .stButton > button:hover {
-        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
-        border-color: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 20px rgba(14, 165, 233, 0.35);
+        color: #ffffff;
     }
 
     /* Sidebar Styling */
     section[data-testid="stSidebar"] {
-        background-color: #080c14;
-        border-right: 1px solid var(--border-color);
+        background-color: #f0f9ff;
+        border-right: 1px solid var(--sky-200);
+    }
+
+    /* Container Box */
+    .glass-panel {
+        background: #ffffff;
+        border: 1px solid var(--sky-200);
+        border-radius: 14px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 16px -2px rgba(14, 165, 233, 0.06);
     }
 </style>
 """, unsafe_allow_html=True)
 
 # --------------------------------------------------
-# PLOTLY THEME CONFIGURATION
+# SKY BLUE LIGHT PLOTLY THEME
 # --------------------------------------------------
 
-PLOTLY_TEMPLATE = {
+PLOTLY_LIGHT_TEMPLATE = {
     "layout": {
-        "paper_bgcolor": "rgba(0,0,0,0)",
-        "plot_bgcolor": "rgba(19, 27, 46, 0.4)",
+        "paper_bgcolor": "rgba(255, 255, 255, 0)",
+        "plot_bgcolor": "rgba(240, 249, 255, 0.5)",
         "font": {
             "family": "Plus Jakarta Sans, sans-serif",
-            "color": "#94a3b8",
+            "color": "#334155",
             "size": 12
         },
         "xaxis": {
-            "gridcolor": "rgba(255, 255, 255, 0.06)",
-            "zerolinecolor": "rgba(255, 255, 255, 0.08)",
-            "tickfont": {"color": "#94a3b8"}
+            "gridcolor": "rgba(14, 165, 233, 0.12)",
+            "zerolinecolor": "rgba(14, 165, 233, 0.2)",
+            "tickfont": {"color": "#475569"}
         },
         "yaxis": {
-            "gridcolor": "rgba(255, 255, 255, 0.06)",
-            "zerolinecolor": "rgba(255, 255, 255, 0.08)",
-            "tickfont": {"color": "#94a3b8"}
+            "gridcolor": "rgba(14, 165, 233, 0.12)",
+            "zerolinecolor": "rgba(14, 165, 233, 0.2)",
+            "tickfont": {"color": "#475569"}
         },
         "legend": {
-            "font": {"color": "#f8fafc"},
-            "bgcolor": "rgba(19, 27, 46, 0.6)",
-            "bordercolor": "rgba(255, 255, 255, 0.08)",
+            "font": {"color": "#0f172a"},
+            "bgcolor": "rgba(255, 255, 255, 0.8)",
+            "bordercolor": "rgba(186, 230, 253, 0.8)",
             "borderwidth": 1
         },
         "hoverlabel": {
-            "bgcolor": "#1e293b",
+            "bgcolor": "#0c4a6e",
             "font": {"family": "Plus Jakarta Sans", "color": "#ffffff", "size": 12},
-            "bordercolor": "rgba(99, 102, 241, 0.4)"
+            "bordercolor": "#38bdf8"
         }
     }
 }
@@ -343,12 +354,13 @@ df_raw = get_raw_data()
 with st.sidebar:
     st.markdown("""
     <div style="padding: 12px 4px 20px 4px;">
-        <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: #6366f1; text-transform: uppercase;">Enterprise Suite</div>
-        <div style="font-size: 20px; font-weight: 800; color: #ffffff; letter-spacing: -0.02em;">FraudShield AI</div>
+        <div style="font-size: 11px; font-weight: 800; letter-spacing: 0.1em; color: #0284c7; text-transform: uppercase;">Enterprise Suite</div>
+        <div style="font-size: 20px; font-weight: 800; color: #0f172a; letter-spacing: -0.02em;">FraudShield AI</div>
+        <div style="font-size: 12px; color: #64748b; font-weight: 500;">Sky Blue Edition</div>
     </div>
     """, unsafe_allow_html=True)
 
-    page = st.radio(
+    page = st.sidebar.radio(
         "Navigation",
         [
             "Executive Command Center",
@@ -363,22 +375,22 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("""
     <div style="padding: 4px;">
-        <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">Engine Telemetry</div>
+        <div style="font-size: 11px; font-weight: 700; color: #0369a1; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">Engine Telemetry</div>
         <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px;">
-            <span style="color: #94a3b8;">Classifier</span>
-            <span style="color: #ffffff; font-weight: 600;">Random Forest</span>
+            <span style="color: #64748b;">Classifier</span>
+            <span style="color: #0f172a; font-weight: 600;">Random Forest</span>
         </div>
         <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px;">
-            <span style="color: #94a3b8;">Ensemble Size</span>
-            <span style="color: #ffffff; font-weight: 600;">300 Trees</span>
+            <span style="color: #64748b;">Ensemble Size</span>
+            <span style="color: #0f172a; font-weight: 600;">300 Trees</span>
         </div>
         <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px;">
-            <span style="color: #94a3b8;">Status</span>
-            <span style="color: #10b981; font-weight: 600;">Operational</span>
+            <span style="color: #64748b;">Status</span>
+            <span style="color: #059669; font-weight: 600;">Operational</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 12px;">
-            <span style="color: #94a3b8;">Latency (p95)</span>
-            <span style="color: #38bdf8; font-weight: 600;">~4.2 ms</span>
+            <span style="color: #64748b;">Latency (p95)</span>
+            <span style="color: #0284c7; font-weight: 600;">~4.2 ms</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -403,7 +415,7 @@ if page == "Executive Command Center":
         total_volume = df_raw["Transaction_Amount"].sum()
         fraud_volume = df_raw[df_raw["Fraud_Label"] == 1]["Transaction_Amount"].sum()
 
-        # Top Metric Row with Animated Cards
+        # Top Metric Row with Animated Sky Blue Light Cards
         k1, k2, k3, k4 = st.columns(4)
 
         with k1:
@@ -446,7 +458,7 @@ if page == "Executive Command Center":
         c1, c2 = st.columns([1.5, 1])
 
         with c1:
-            st.markdown('<div class="section-header">Transaction Amount vs. Account Balance Dynamic Distribution</div>', unsafe_allow_html=True)
+            st.markdown('<div class="section-header">Transaction Amount vs. Account Balance Distribution</div>', unsafe_allow_html=True)
             sample_df = df_raw.sample(min(2000, len(df_raw)), random_state=42)
             sample_df["Status"] = sample_df["Fraud_Label"].map({0: "Legitimate", 1: "Fraudulent"})
 
@@ -457,9 +469,9 @@ if page == "Executive Command Center":
                 color="Status",
                 size="Daily_Transaction_Count",
                 hover_data=["Transaction_Type", "Merchant_Category", "Location", "Device_Type"],
-                color_discrete_map={"Legitimate": "#3b82f6", "Fraudulent": "#f43f5e"},
-                opacity=0.75,
-                template=PLOTLY_TEMPLATE
+                color_discrete_map={"Legitimate": "#0284c7", "Fraudulent": "#f43f5e"},
+                opacity=0.8,
+                template=PLOTLY_LIGHT_TEMPLATE
             )
             fig_scatter.update_layout(
                 height=380,
@@ -480,13 +492,13 @@ if page == "Executive Command Center":
                 names="Category",
                 hole=0.65,
                 color="Category",
-                color_discrete_map={"Legitimate": "#10b981", "Fraudulent": "#f43f5e"},
-                template=PLOTLY_TEMPLATE
+                color_discrete_map={"Legitimate": "#0ea5e9", "Fraudulent": "#f43f5e"},
+                template=PLOTLY_LIGHT_TEMPLATE
             )
             fig_donut.update_traces(
                 textposition='inside',
                 textinfo='percent+label',
-                marker=dict(line=dict(color='#0b0f19', width=3))
+                marker=dict(line=dict(color='#ffffff', width=2))
             )
             fig_donut.update_layout(
                 height=380,
@@ -495,7 +507,7 @@ if page == "Executive Command Center":
             )
             st.plotly_chart(fig_donut, use_container_width=True)
 
-        # Row 3: Breakdown by Channel and Merchant Category
+        # Breakdown by Channel and Merchant Category
         r1, r2 = st.columns(2)
 
         with r1:
@@ -509,8 +521,8 @@ if page == "Executive Command Center":
                 y="Count",
                 color="Status",
                 barmode="group",
-                color_discrete_map={"Legitimate": "#3b82f6", "Fraudulent": "#f43f5e"},
-                template=PLOTLY_TEMPLATE
+                color_discrete_map={"Legitimate": "#0284c7", "Fraudulent": "#f43f5e"},
+                template=PLOTLY_LIGHT_TEMPLATE
             )
             fig_channel.update_layout(
                 height=320,
@@ -529,8 +541,8 @@ if page == "Executive Command Center":
                 x="Merchant_Category",
                 y="Fraud_Rate",
                 color="Fraud_Rate",
-                color_continuous_scale="Viridis",
-                template=PLOTLY_TEMPLATE
+                color_continuous_scale="Blues",
+                template=PLOTLY_LIGHT_TEMPLATE
             )
             fig_merchant.update_layout(
                 height=320,
@@ -558,9 +570,6 @@ elif page == "Real-Time Risk Simulator":
     # Preset Scenario Loaders
     st.markdown('<div class="section-header">Interactive Scenario Presets</div>', unsafe_allow_html=True)
     p1, p2, p3, p4 = st.columns(4)
-
-    if "preset" not in st.session_state:
-        st.session_state.preset = "custom"
 
     preset_values = {
         "amount": 120.0,
@@ -720,8 +729,8 @@ elif page == "Real-Time Risk Simulator":
                     <p class="result-desc">High risk anomalous transaction flagged by ensemble model. Recommended action: Immediate Authorization Hold.</p>
                 </div>
                 <div style="text-align: right;">
-                    <div style="font-size: 28px; font-weight: 800; color: #f43f5e;">{fraud_prob:.1f}%</div>
-                    <div style="font-size: 11px; color: #fda4af; text-transform: uppercase; font-weight: 600;">Risk Score</div>
+                    <div style="font-size: 28px; font-weight: 800; color: #e11d48;">{fraud_prob:.1f}%</div>
+                    <div style="font-size: 11px; color: #e11d48; text-transform: uppercase; font-weight: 700;">Risk Score</div>
                 </div>
             </div>
             """, unsafe_allow_html=True)
@@ -733,8 +742,8 @@ elif page == "Real-Time Risk Simulator":
                     <p class="result-desc">Transaction conforms to standard non-anomalous behavioral baselines. Recommended action: Approve.</p>
                 </div>
                 <div style="text-align: right;">
-                    <div style="font-size: 28px; font-weight: 800; color: #10b981;">{fraud_prob:.1f}%</div>
-                    <div style="font-size: 11px; color: #6ee7b7; text-transform: uppercase; font-weight: 600;">Risk Score</div>
+                    <div style="font-size: 28px; font-weight: 800; color: #059669;">{fraud_prob:.1f}%</div>
+                    <div style="font-size: 11px; color: #059669; text-transform: uppercase; font-weight: 700;">Risk Score</div>
                 </div>
             </div>
             """, unsafe_allow_html=True)
@@ -748,18 +757,18 @@ elif page == "Real-Time Risk Simulator":
                 mode="gauge+number+delta",
                 value=fraud_prob,
                 domain={'x': [0, 1], 'y': [0, 1]},
-                title={'text': "Fraud Probability (%)", 'font': {'size': 16, 'color': '#ffffff'}},
-                delta={'reference': 50, 'increasing': {'color': "#f43f5e"}, 'decreasing': {'color': "#10b981"}},
+                title={'text': "Fraud Probability (%)", 'font': {'size': 16, 'color': '#0f172a'}},
+                delta={'reference': 50, 'increasing': {'color': "#f43f5e"}, 'decreasing': {'color': "#0284c7"}},
                 gauge={
-                    'axis': {'range': [0, 100], 'tickwidth': 1, 'tickcolor': "#94a3b8"},
-                    'bar': {'color': "#6366f1", 'thickness': 0.28},
-                    'bgcolor': "rgba(19, 27, 46, 0.6)",
+                    'axis': {'range': [0, 100], 'tickwidth': 1, 'tickcolor': "#64748b"},
+                    'bar': {'color': "#0284c7", 'thickness': 0.28},
+                    'bgcolor': "#f0f9ff",
                     'borderwidth': 2,
-                    'bordercolor': "rgba(255,255,255,0.1)",
+                    'bordercolor': "#bae6fd",
                     'steps': [
-                        {'range': [0, 30], 'color': 'rgba(16, 185, 129, 0.3)'},
-                        {'range': [30, 70], 'color': 'rgba(245, 158, 11, 0.3)'},
-                        {'range': [70, 100], 'color': 'rgba(244, 63, 94, 0.4)'}
+                        {'range': [0, 30], 'color': '#e0f2fe'},
+                        {'range': [30, 70], 'color': '#fef3c7'},
+                        {'range': [70, 100], 'color': '#ffe4e6'}
                     ],
                     'threshold': {
                         'line': {'color': "#f43f5e", 'width': 4},
@@ -801,8 +810,8 @@ elif page == "Real-Time Risk Simulator":
                 theta=radar_categories,
                 fill='toself',
                 name='Current Transaction',
-                line_color='#6366f1',
-                fillcolor='rgba(99, 102, 241, 0.3)'
+                line_color='#0284c7',
+                fillcolor='rgba(14, 165, 233, 0.35)'
             ))
             fig_radar.add_trace(go.Scatterpolar(
                 r=legit_baseline,
@@ -810,7 +819,7 @@ elif page == "Real-Time Risk Simulator":
                 fill='toself',
                 name='Legitimate Baseline',
                 line_color='#10b981',
-                fillcolor='rgba(16, 185, 129, 0.1)'
+                fillcolor='rgba(16, 185, 129, 0.15)'
             ))
             fig_radar.add_trace(go.Scatterpolar(
                 r=fraud_baseline,
@@ -818,12 +827,12 @@ elif page == "Real-Time Risk Simulator":
                 fill='toself',
                 name='Fraud Baseline',
                 line_color='#f43f5e',
-                fillcolor='rgba(244, 63, 94, 0.1)'
+                fillcolor='rgba(244, 63, 94, 0.15)'
             ))
             fig_radar.update_layout(
                 polar=dict(
-                    radialaxis=dict(visible=True, range=[0, 100], color="#64748b", gridcolor="rgba(255,255,255,0.06)"),
-                    bgcolor="rgba(19, 27, 46, 0.4)"
+                    radialaxis=dict(visible=True, range=[0, 100], color="#64748b", gridcolor="#e2e8f0"),
+                    bgcolor="#f8fafc"
                 ),
                 height=320,
                 margin=dict(l=20, r=20, t=20, b=20),
@@ -876,17 +885,17 @@ elif page == "Visual Analytics & Patterns":
             z="Daily_Transaction_Count",
             color="Status",
             size="Card_Age",
-            color_discrete_map={"Legitimate": "#3b82f6", "Fraudulent": "#f43f5e"},
-            opacity=0.8,
-            template=PLOTLY_TEMPLATE
+            color_discrete_map={"Legitimate": "#0284c7", "Fraudulent": "#f43f5e"},
+            opacity=0.85,
+            template=PLOTLY_LIGHT_TEMPLATE
         )
         fig_3d.update_layout(
             height=500,
             margin=dict(l=0, r=0, t=0, b=0),
             scene=dict(
-                xaxis=dict(backgroundcolor="rgba(19, 27, 46, 0.4)", gridcolor="rgba(255,255,255,0.06)"),
-                yaxis=dict(backgroundcolor="rgba(19, 27, 46, 0.4)", gridcolor="rgba(255,255,255,0.06)"),
-                zaxis=dict(backgroundcolor="rgba(19, 27, 46, 0.4)", gridcolor="rgba(255,255,255,0.06)")
+                xaxis=dict(backgroundcolor="#f0f9ff", gridcolor="#bae6fd"),
+                yaxis=dict(backgroundcolor="#f0f9ff", gridcolor="#bae6fd"),
+                zaxis=dict(backgroundcolor="#f0f9ff", gridcolor="#bae6fd")
             )
         )
         st.plotly_chart(fig_3d, use_container_width=True)
@@ -903,8 +912,8 @@ elif page == "Visual Analytics & Patterns":
                 path=["Transaction_Type", "Location", "Fraud_Status"],
                 values="Transaction_Amount",
                 color="Fraud_Status",
-                color_discrete_map={"Legitimate": "#3b82f6", "Fraud": "#f43f5e", "(?)": "#10b981"},
-                template=PLOTLY_TEMPLATE
+                color_discrete_map={"Legitimate": "#0284c7", "Fraud": "#f43f5e", "(?)": "#38bdf8"},
+                template=PLOTLY_LIGHT_TEMPLATE
             )
             fig_sun.update_layout(height=400, margin=dict(l=10, r=10, t=10, b=10))
             st.plotly_chart(fig_sun, use_container_width=True)
@@ -919,7 +928,7 @@ elif page == "Visual Analytics & Patterns":
                 text_auto=".2f",
                 aspect="auto",
                 color_continuous_scale="Blues",
-                template=PLOTLY_TEMPLATE
+                template=PLOTLY_LIGHT_TEMPLATE
             )
             fig_corr.update_layout(height=400, margin=dict(l=10, r=10, t=10, b=10))
             st.plotly_chart(fig_corr, use_container_width=True)
@@ -1056,8 +1065,8 @@ elif page == "Model Performance Forensics":
                 y="Feature",
                 orientation="h",
                 color="Importance",
-                color_continuous_scale="Viridis",
-                template=PLOTLY_TEMPLATE
+                color_continuous_scale="Blues",
+                template=PLOTLY_LIGHT_TEMPLATE
             )
             fig_fi.update_layout(
                 height=380,
@@ -1077,8 +1086,8 @@ elif page == "Model Performance Forensics":
                 x=cm_labels,
                 y=cm_labels,
                 text_auto=True,
-                color_continuous_scale="Purples",
-                template=PLOTLY_TEMPLATE
+                color_continuous_scale="Blues",
+                template=PLOTLY_LIGHT_TEMPLATE
             )
             fig_cm.update_layout(
                 height=380,
