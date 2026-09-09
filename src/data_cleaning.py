@@ -1,44 +1,47 @@
 import pandas as pd
+from pathlib import Path
 
-INPUT_PATH = "data/raw/synthetic_fraud_dataset1.csv"
-OUTPUT_PATH = "data/processed/cleaned_fraud_data.csv"
+DEFAULT_INPUT_PATH = Path("data/raw/synthetic_fraud_dataset1.csv")
+DEFAULT_OUTPUT_PATH = Path("data/processed/cleaned_fraud_data.csv")
 
 
-def clean_data():
+def clean_data(
+    input_path: str | Path = DEFAULT_INPUT_PATH,
+    output_path: str | Path = DEFAULT_OUTPUT_PATH
+) -> pd.DataFrame:
+    """
+    Clean raw transaction dataset by removing duplicates, converting date types,
+    and dropping null records.
+    """
+    input_p = Path(input_path)
+    output_p = Path(output_path)
 
-    # Load raw dataset
-    df = pd.read_csv(INPUT_PATH)
+    if not input_p.is_file():
+        raise FileNotFoundError(f"Input file not found at: {input_p.resolve()}")
+
+    df = pd.read_csv(input_p)
 
     print("\n--- DATA CLEANING STARTED ---")
-    print(f"Original rows: {df.shape[0]}")
-    print(f"Original columns: {df.shape[1]}")
+    print(f"Initial row count    : {df.shape[0]:,}")
+    print(f"Initial column count : {df.shape[1]}")
 
-    # Remove duplicate rows
     duplicates = df.duplicated().sum()
-    print(f"Duplicate rows found: {duplicates}")
-
+    print(f"Duplicates identified: {duplicates:,}")
     df = df.drop_duplicates()
 
-    # Convert Date column to datetime
     df["Date"] = pd.to_datetime(df["Date"], errors="coerce")
 
-    # Check missing values
-    print("\nMissing values after cleaning:")
-    print(df.isnull().sum())
+    missing_count = df.isnull().sum().sum()
+    print(f"Missing values found : {missing_count:,}")
+    df = df.dropna().reset_index(drop=True)
 
-    # Remove rows with missing values
-    df = df.dropna()
+    output_p.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(output_p, index=False)
 
-    # Reset index
-    df = df.reset_index(drop=True)
-
-    # Save cleaned dataset
-    df.to_csv(OUTPUT_PATH, index=False)
-
-    print("\n--- DATA CLEANING COMPLETED ---")
-    print(f"Cleaned rows: {df.shape[0]}")
-    print(f"Cleaned columns: {df.shape[1]}")
-    print(f"Cleaned dataset saved to: {OUTPUT_PATH}")
+    print("--- DATA CLEANING COMPLETED ---")
+    print(f"Cleaned row count    : {df.shape[0]:,}")
+    print(f"Cleaned column count : {df.shape[1]}")
+    print(f"Saved cleaned data to: {output_p.resolve()}")
 
     return df
 

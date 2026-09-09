@@ -1,163 +1,77 @@
 import pandas as pd
 from pathlib import Path
 
-
-# ---------------------------------------
-# FILE PATHS
-# ---------------------------------------
-
-INPUT_FILE = "data/processed/cleaned_fraud_data.csv"
-OUTPUT_FILE = "data/processed/feature_engineered_fraud_data.csv"
+DEFAULT_INPUT_FILE = Path("data/processed/cleaned_fraud_data.csv")
+DEFAULT_OUTPUT_FILE = Path("data/processed/feature_engineered_fraud_data.csv")
 
 
-# ---------------------------------------
-# LOAD CLEANED DATA
-# ---------------------------------------
+def engineer_features(
+    input_path: str | Path = DEFAULT_INPUT_FILE,
+    output_path: str | Path = DEFAULT_OUTPUT_FILE
+) -> pd.DataFrame:
+    """
+    Perform feature engineering on cleaned fraud data:
+    - Extracts date components (year, month, day, day of week)
+    - Computes amount-to-balance ratio and threshold flags
+    - One-hot encodes categorical attributes
+    - Standardizes output feature matrix
+    """
+    input_p = Path(input_path)
+    output_p = Path(output_path)
 
-df = pd.read_csv(INPUT_FILE)
+    if not input_p.is_file():
+        raise FileNotFoundError(f"Cleaned dataset not found at: {input_p.resolve()}")
 
-print("\n--- FEATURE ENGINEERING STARTED ---")
+    df = pd.read_csv(input_p)
 
-print(f"Original rows: {df.shape[0]}")
-print(f"Original columns: {df.shape[1]}")
+    print("\n--- FEATURE ENGINEERING STARTED ---")
+    print(f"Input records: {df.shape[0]:,}")
+    print(f"Input columns: {df.shape[1]}")
 
+    # Temporal feature extraction
+    df["Date"] = pd.to_datetime(df["Date"])
+    df["Transaction_Year"] = df["Date"].dt.year
+    df["Transaction_Month"] = df["Date"].dt.month
+    df["Transaction_Day"] = df["Date"].dt.day
+    df["Transaction_DayOfWeek"] = df["Date"].dt.dayofweek
 
-# ---------------------------------------
-# DATE FEATURES
-# ---------------------------------------
+    # Financial & behavioral ratios
+    df["Amount_to_Balance_Ratio"] = df["Transaction_Amount"] / (df["Account_Balance"] + 1)
+    df["High_Amount_Flag"] = (df["Transaction_Amount"] > df["Transaction_Amount"].median()).astype(int)
+    df["High_Transaction_Frequency"] = (df["Daily_Transaction_Count"] > df["Daily_Transaction_Count"].median()).astype(int)
 
-df["Date"] = pd.to_datetime(df["Date"])
+    # Remove non-predictive identifiers and original datetime string
+    df = df.drop(columns=["Transaction_ID", "User_ID", "Date"], errors="ignore")
 
-df["Transaction_Year"] = df["Date"].dt.year
-df["Transaction_Month"] = df["Date"].dt.month
-df["Transaction_Day"] = df["Date"].dt.day
-df["Transaction_DayOfWeek"] = df["Date"].dt.dayofweek
-
-
-# ---------------------------------------
-# AMOUNT-BASED FEATURES
-# ---------------------------------------
-
-df["Amount_to_Balance_Ratio"] = (
-    df["Transaction_Amount"] /
-    (df["Account_Balance"] + 1)
-)
-
-df["High_Amount_Flag"] = (
-    df["Transaction_Amount"] >
-    df["Transaction_Amount"].median()
-).astype(int)
-
-
-# ---------------------------------------
-# TRANSACTION BEHAVIOR FEATURES
-# ---------------------------------------
-
-df["High_Transaction_Frequency"] = (
-    df["Daily_Transaction_Count"] >
-    df["Daily_Transaction_Count"].median()
-).astype(int)
-
-
-# ---------------------------------------
-# DROP IDENTIFIERS / ORIGINAL DATE
-# ---------------------------------------
-
-df = df.drop(
-    columns=[
-        "Transaction_ID",
-        "User_ID",
-        "Date"
+    # One-hot encoding for categorical attributes
+    categorical_columns = [
+        "Transaction_Type",
+        "Device_Type",
+        "Location",
+        "Merchant_Category",
+        "Card_Type"
     ]
-)
+
+    existing_cats = [col for col in categorical_columns if col in df.columns]
+    df = pd.get_dummies(df, columns=existing_cats, drop_first=True, dtype=int)
+
+    # Reorder so target is the final column
+    if "Fraud_Label" in df.columns:
+        target = df["Fraud_Label"]
+        features = df.drop(columns=["Fraud_Label"])
+        final_df = pd.concat([features, target], axis=1)
+    else:
+        final_df = df
+
+    output_p.parent.mkdir(parents=True, exist_ok=True)
+    final_df.to_csv(output_p, index=False)
+
+    print("--- FEATURE ENGINEERING COMPLETED ---")
+    print(f"Output shape: {final_df.shape[0]:,} rows, {final_df.shape[1]} columns")
+    print(f"Output file: {output_p.resolve()}")
+
+    return final_df
 
 
-# ---------------------------------------
-# ENCODE CATEGORICAL FEATURES
-# ---------------------------------------
-
-categorical_columns = [
-    "Transaction_Type",
-    "Device_Type",
-    "Location",
-    "Merchant_Category",
-    "Card_Type"
-]
-
-df = pd.get_dummies(
-    df,
-    columns=categorical_columns,
-    drop_first=True,
-    dtype=int
-)
-
-
-# ---------------------------------------
-# SEPARATE TARGET
-# ---------------------------------------
-
-target = df["Fraud_Label"]
-
-features = df.drop(
-    columns=["Fraud_Label"]
-)
-
-
-# ---------------------------------------
-# CREATE FINAL DATASET
-# ---------------------------------------
-
-final_df = pd.concat(
-    [features, target],
-    axis=1
-)
-
-
-# ---------------------------------------
-# SAVE FEATURE-ENGINEERED DATA
-# ---------------------------------------
-
-Path("data/processed").mkdir(
-    parents=True,
-    exist_ok=True
-)
-
-final_df.to_csv(
-    OUTPUT_FILE,
-    index=False
-)
-
-
-# ---------------------------------------
-# RESULTS
-# ---------------------------------------
-
-print("\nNew features created:")
-
-print("Transaction_Year")
-print("Transaction_Month")
-print("Transaction_Day")
-print("Transaction_DayOfWeek")
-print("Amount_to_Balance_Ratio")
-print("High_Amount_Flag")
-print("High_Transaction_Frequency")
-
-
-print("\nFinal dataset:")
-print(f"Rows: {final_df.shape[0]}")
-print(f"Columns: {final_df.shape[1]}")
-
-
-print("\nFinal column names:")
-print(final_df.columns.tolist())
-
-
-print("\nFraud label distribution:")
-print(final_df["Fraud_Label"].value_counts())
-
-
-print("\n--- FEATURE ENGINEERING COMPLETED ---")
-
-print(
-    f"Feature-engineered dataset saved to: {OUTPUT_FILE}"
-)
+if __name__ == "__main__":
+    engineer_features()

@@ -1,88 +1,63 @@
-import pandas as pd
 import joblib
+import pandas as pd
+from pathlib import Path
+
+DEFAULT_DATA_PATH = Path("data/processed/feature_engineered_fraud_data.csv")
+DEFAULT_MODEL_PATH = Path("models/fraud_detection_model.pkl")
+DEFAULT_SCALER_PATH = Path("models/scaler.pkl")
+DEFAULT_OUTPUT_PATH = Path("outputs/prediction_result.csv")
 
 
-# --------------------------------------------------
-# 1. LOAD TRAINED MODEL AND SCALER
-# --------------------------------------------------
+def predict_sample(
+    data_path: str | Path = DEFAULT_DATA_PATH,
+    model_path: str | Path = DEFAULT_MODEL_PATH,
+    scaler_path: str | Path = DEFAULT_SCALER_PATH,
+    output_path: str | Path = DEFAULT_OUTPUT_PATH,
+    sample_index: int = 0
+) -> pd.DataFrame:
+    """
+    Run single or sample transaction inference using the trained model pipeline.
+    """
+    data_p = Path(data_path)
+    model_p = Path(model_path)
+    scaler_p = Path(scaler_path)
+    output_p = Path(output_path)
 
-MODEL_PATH = "models/fraud_detection_model.pkl"
-SCALER_PATH = "models/scaler.pkl"
+    for p, name in [(data_p, "Data file"), (model_p, "Model file"), (scaler_p, "Scaler file")]:
+        if not p.is_file():
+            raise FileNotFoundError(f"{name} not found at: {p.resolve()}")
 
-model = joblib.load(MODEL_PATH)
-scaler = joblib.load(SCALER_PATH)
+    model = joblib.load(model_p)
+    scaler = joblib.load(scaler_p)
+    df = pd.read_csv(data_p)
 
-print("\n--- FRAUD PREDICTION SYSTEM ---")
-print("Model loaded successfully!")
-print("Scaler loaded successfully!")
+    sample_transaction = df.drop(columns=["Fraud_Label"]).iloc[[sample_index]]
+    actual_label = df["Fraud_Label"].iloc[sample_index] if "Fraud_Label" in df.columns else None
 
+    sample_scaled = scaler.transform(sample_transaction)
+    prediction = int(model.predict(sample_scaled)[0])
+    probabilities = model.predict_proba(sample_scaled)[0]
 
-# --------------------------------------------------
-# 2. LOAD FEATURE-ENGINEERED DATA
-# --------------------------------------------------
+    print("\n--- TRANSACTION INFERENCE RESULT ---")
+    if actual_label is not None:
+        print(f"Ground Truth Label  : {'FRAUD (1)' if actual_label == 1 else 'LEGITIMATE (0)'}")
+    print(f"Model Prediction    : {'FRAUD (1)' if prediction == 1 else 'LEGITIMATE (0)'}")
+    print(f"Legitimate Confidence: {probabilities[0]:.2%}")
+    print(f"Fraud Confidence     : {probabilities[1]:.2%}")
 
-FILE_PATH = "data/processed/feature_engineered_fraud_data.csv"
+    result_df = sample_transaction.copy()
+    result_df["Actual_Fraud_Label"] = actual_label
+    result_df["Predicted_Fraud_Label"] = prediction
+    result_df["Fraud_Probability"] = probabilities[1]
+    result_df["Legitimate_Probability"] = probabilities[0]
 
-df = pd.read_csv(FILE_PATH)
+    output_p.parent.mkdir(parents=True, exist_ok=True)
+    result_df.to_csv(output_p, index=False)
+    print(f"Prediction output saved to: {output_p.resolve()}")
+    print("------------------------------------\n")
 
-
-# --------------------------------------------------
-# 3. SELECT ONE TRANSACTION FOR DEMONSTRATION
-# --------------------------------------------------
-
-sample_transaction = df.drop(columns=["Fraud_Label"]).iloc[[0]]
-
-actual_label = df["Fraud_Label"].iloc[0]
-
-
-# --------------------------------------------------
-# 4. SCALE TRANSACTION
-# --------------------------------------------------
-
-sample_scaled = scaler.transform(sample_transaction)
-
-
-# --------------------------------------------------
-# 5. MAKE PREDICTION
-# --------------------------------------------------
-
-prediction = model.predict(sample_scaled)[0]
-
-probability = model.predict_proba(sample_scaled)[0]
-
-
-# --------------------------------------------------
-# 6. DISPLAY PREDICTION
-# --------------------------------------------------
-
-print("\n--- TRANSACTION PREDICTION ---")
-
-print(f"Actual Fraud Label: {actual_label}")
-
-if prediction == 1:
-    print("Prediction: FRAUDULENT TRANSACTION")
-else:
-    print("Prediction: LEGITIMATE TRANSACTION")
-
-print(f"Legitimate Probability: {probability[0]:.2%}")
-print(f"Fraud Probability: {probability[1]:.2%}")
+    return result_df
 
 
-# --------------------------------------------------
-# 7. SAVE PREDICTION
-# --------------------------------------------------
-
-result = sample_transaction.copy()
-
-result["Predicted_Fraud_Label"] = prediction
-result["Fraud_Probability"] = probability[1]
-
-result.to_csv(
-    "outputs/prediction_result.csv",
-    index=False
-)
-
-print("\nPrediction saved to:")
-print("outputs/prediction_result.csv")
-
-print("\n--- FRAUD PREDICTION COMPLETED ---")
+if __name__ == "__main__":
+    predict_sample()
