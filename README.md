@@ -2,28 +2,31 @@
 
 A comprehensive Machine Learning system and intelligence dashboard designed for high-throughput, real-time transaction surveillance, anomaly detection, and capital risk mitigation.
 
+![FraudShield AI Enterprise Intelligence Platform](outputs/figures/hero_banner.jpg)
+
 ---
 
 ## Table of Contents
 
 1. [Executive Summary](#1-executive-summary)
-2. [The Financial Fraud Challenge](#2-the-financial-fraud-challenge)
-3. [System Architecture & Data Flow](#3-system-architecture--data-flow)
-4. [Dataset Specifications & Schema](#4-dataset-specifications--schema)
-5. [Data Cleansing & Ingestion Pipeline](#5-data-cleansing--ingestion-pipeline)
-6. [Feature Engineering & Mathematical Formulations](#6-feature-engineering--mathematical-formulations)
-7. [Exploratory Data Analysis & Risk Patterns](#7-exploratory-data-analysis--risk-patterns)
-8. [Machine Learning Model Architecture](#8-machine-learning-model-architecture)
-9. [Quantitative Performance Benchmarks & Validation](#9-quantitative-performance-benchmarks--validation)
-10. [Real-Time Inference & Risk Scoring Engine](#10-real-time-inference--risk-scoring-engine)
-11. [Enterprise Sky Blue Intelligence Dashboard](#11-enterprise-sky-blue-intelligence-dashboard)
-12. [CLI Pipeline Orchestration (`main.py`)](#12-cli-pipeline-orchestration-mainpy)
-13. [Installation & Operational Setup](#13-installation--operational-setup)
-14. [REST API Integration Schema](#14-rest-api-integration-schema)
-15. [Production Deployment & Containerization](#15-production-deployment--containerization)
-16. [Security, Governance & Compliance](#16-security-governance--compliance)
-17. [Project Directory Hierarchy](#17-project-directory-hierarchy)
-18. [Troubleshooting & Frequently Asked Questions](#18-troubleshooting--frequently-asked-questions)
+2. [Technology Stack Architecture (Mermaid)](#2-technology-stack-architecture)
+3. [The Financial Fraud Challenge](#3-the-financial-fraud-challenge)
+4. [System Architecture & Data Flow (Mermaid)](#4-system-architecture--data-flow)
+5. [Dataset Specifications & Schema](#5-dataset-specifications--schema)
+6. [Data Cleansing & Ingestion Pipeline](#6-data-cleansing--ingestion-pipeline)
+7. [Feature Engineering & Mathematical Formulations](#7-feature-engineering--mathematical-formulations)
+8. [Exploratory Data Analysis & Risk Patterns](#8-exploratory-data-analysis--risk-patterns)
+9. [Machine Learning Model Architecture](#9-machine-learning-model-architecture)
+10. [Quantitative Performance Benchmarks & Validation](#10-quantitative-performance-benchmarks--validation)
+11. [Real-Time Inference & Automated Decision Routing (Mermaid)](#11-real-time-inference--automated-decision-routing)
+12. [Enterprise Sky Blue Intelligence Dashboard](#12-enterprise-sky-blue-intelligence-dashboard)
+13. [CLI Pipeline Orchestration (`main.py`)](#13-cli-pipeline-orchestration-mainpy)
+14. [Installation & Operational Setup](#14-installation--operational-setup)
+15. [REST API Integration Schema](#15-rest-api-integration-schema)
+16. [Production Deployment & Containerization](#16-production-deployment--containerization)
+17. [Security, Governance & Compliance](#17-security-governance--compliance)
+18. [Project Directory Hierarchy](#18-project-directory-hierarchy)
+19. [Troubleshooting & Frequently Asked Questions](#19-troubleshooting--frequently-asked-questions)
 
 ---
 
@@ -40,7 +43,46 @@ Financial fraud is an existential operational threat for modern payment networks
 
 ---
 
-## 2. The Financial Fraud Challenge
+## 2. Technology Stack Architecture
+
+The FraudShield AI platform is built upon a modern, decoupled open-source Python data science and machine learning ecosystem:
+
+```mermaid
+flowchart TB
+    subgraph INGESTION["Data Ingestion & Processing Layer"]
+        PANDAS["Pandas (v2.0+) - Data Manipulation & Wrangling"]
+        NUMPY["NumPy (v1.24+) - Vectorized Math Computations"]
+        PATHLIB["Pathlib - Deterministic Cross-Platform File Paths"]
+    end
+
+    subgraph ML_CORE["Machine Learning & Inference Engine"]
+        SKLEARN["Scikit-Learn (v1.3+) - Ensemble Classifier Engine"]
+        RF["RandomForestClassifier (300 Estimators, Balanced Class Weights)"]
+        SCALER["StandardScaler - Z-Score Feature Normalization"]
+        JOBLIB["Joblib (v1.3+) - Model Artifact Serialization & Loading"]
+    end
+
+    subgraph VISUALIZATION["Visualization & Analytics Tier"]
+        PLOTLY["Plotly (v5.18+) - Interactive Light Sky Blue Charts & Gauges"]
+        SEABORN["Seaborn (v0.12+) - High-Resolution Statistical Visualizations"]
+        MATPLOTLIB["Matplotlib (v3.7+) - 300 DPI Export Plotting"]
+    end
+
+    subgraph PRESENTATION["Presentation & Interface Tier"]
+        STREAMLIT["Streamlit (v1.28+) - Multi-Page Enterprise Intelligence App"]
+        CSS3["Custom CSS3 - Sky Blue Glassmorphism & Animated Cards"]
+        REST_API["REST API Specification - JSON Payload Validation"]
+    end
+
+    INGESTION --> ML_CORE
+    ML_CORE --> VISUALIZATION
+    VISUALIZATION --> PRESENTATION
+    ML_CORE --> PRESENTATION
+```
+
+---
+
+## 3. The Financial Fraud Challenge
 
 Traditional financial defense mechanisms rely heavily on static, rule-based heuristics (such as *`IF transaction_amount > $500 THEN flag`*). These legacy frameworks introduce critical institutional vulnerabilities:
 1. **High False Positive Rates**: Rigid thresholds decline high-value transactions from VIP or legitimate users, damaging customer retention.
@@ -51,73 +93,55 @@ FraudShield AI transitions the defense posture from reactive rule lists to proac
 
 ---
 
-## 3. System Architecture & Data Flow
+## 4. System Architecture & Data Flow
 
-The platform follows a modular, decoupled architecture separated into data processing, feature engineering, model serialization, and presentation tiers.
+```mermaid
+flowchart TD
+    RAW["Raw Ingestion Stream<br/>(data/raw/synthetic_fraud_dataset1.csv)"]
+    
+    subgraph STEP1["1. Data Cleansing (src/data_cleaning.py)"]
+        DEDUP["Deduplication"]
+        PARSE["Datetime Normalization"]
+        PURGE["Null / Corrupt Record Purge"]
+    end
 
-```
-+-----------------------------------------------------------------------------------+
-|                            Raw Ingestion Stream                                   |
-|                  (data/raw/synthetic_fraud_dataset1.csv)                          |
-+-----------------------------------------------------------------------------------+
-                                          |
-                                          v
-+-----------------------------------------------------------------------------------+
-|                          1. Data Cleaning Engine                                  |
-|                          (src/data_cleaning.py)                                   |
-|   - Duplicate identification and record purging                                   |
-|   - ISO 8601 Datetime standard parsing & validation                               |
-|   - Null / missing value isolation and dataset sanitization                       |
-+-----------------------------------------------------------------------------------+
-                                          |
-                                          v
-+-----------------------------------------------------------------------------------+
-|                     2. Feature Engineering & Matrix Builder                       |
-|                       (src/feature_engineering.py)                                |
-|   - Temporal decomposition (Year, Month, Day, DayOfWeek)                          |
-|   - Financial liquidity ratios (Amount-to-Balance with Laplace smoothing)          |
-|   - Velocity & frequency indicators (High_Amount_Flag, High_Frequency_Flag)       |
-|   - One-hot binary categorical encoding (29-dimensional feature matrix)           |
-+-----------------------------------------------------------------------------------+
-                                          |
-                     +--------------------+--------------------+
-                     |                                         |
-                     v                                         v
-+-----------------------------------------+   +-----------------------------------------+
-|     3. Statistical & Visual EDA         |   |         4. Model Training Engine        |
-|            (src/eda.py)                 |   |           (src/train_model.py)          |
-| - 8 High-resolution (300 DPI) plots     |   | - Stratified 80/20 train/test partition |
-| - Anomaly & correlation breakdown       |   | - StandardScaler normalization          |
-| - Saved to outputs/figures/             |   | - Random Forest (300 trees, balanced)   |
-|                                         |   | - Artifact export: models/*.pkl         |
-+-----------------------------------------+   +-----------------------------------------+
-                                                                   |
-                                                                   v
-                                              +-----------------------------------------+
-                                              |    5. Model Evaluation & Reporting      |
-                                              |        (src/evaluate_model.py)          |
-                                              | - Accuracy, Precision, Recall, F1, AUC  |
-                                              | - Export reports/model_evaluation.txt   |
-                                              +-----------------------------------------+
-                                                                   |
-                                           +-----------------------+--------------------+
-                                           |                                            |
-                                           v                                            v
-+-------------------------------------------------------+   +-------------------------------------------------------+
-|             6. Batch & Single Inference               |   |        7. Enterprise Sky Blue Dashboard               |
-|              (src/fraud_prediction.py)                |   |                  (dashboard/app.py)                   |
-| - Real-time scoring of individual records             |   | - Landing Portal & Instant Risk Sandbox               |
-| - Confidence probability export to CSV                |   | - Executive Command Center                            |
-+-------------------------------------------------------+   | - Real-Time Risk Simulator with Dynamic Gauges        |
-                                                            | - Visual Analytics & 3D Feature Space Explorer        |
-                                                            | - Batch Forensic Auditor with Scored CSV Export       |
-                                                            | - Model Forensics & Feature Importance Rankings       |
-                                                            +-------------------------------------------------------+
+    subgraph STEP2["2. Feature Engineering (src/feature_engineering.py)"]
+        TEMP["Temporal Decomposition (Year, Month, Day, DayOfWeek)"]
+        RATIO["Amount-to-Balance Liquidity Ratio"]
+        FLAGS["Velocity Flags (High Amount, High Frequency)"]
+        OHE["One-Hot Categorical Encoding (29 Dimensions)"]
+    end
+
+    subgraph STEP3["3. Modeling & Training (src/train_model.py)"]
+        SPLIT["Stratified 80/20 Train-Test Split"]
+        NORM["StandardScaler Normalization"]
+        TRAIN["Random Forest Ensemble (300 Trees)"]
+        SAVE["Export Artifacts (models/*.pkl)"]
+    end
+
+    subgraph STEP4["4. Validation & Intelligence (src/evaluate_model.py)"]
+        REPORT["Evaluation Report (reports/model_evaluation.txt)"]
+        METRICS["Metrics (Accuracy, Precision, Recall, ROC-AUC)"]
+    end
+
+    subgraph STEP5["5. Dashboard & Decision Interface (dashboard/app.py)"]
+        PORTAL["Overview Landing Portal"]
+        SIM["Real-Time Risk Simulator"]
+        ANALYTICS["3D Feature Space Analytics"]
+        BATCH["Batch Forensic Auditor"]
+    end
+
+    RAW --> STEP1
+    STEP1 --> STEP2
+    STEP2 --> STEP3
+    STEP3 --> STEP4
+    STEP4 --> STEP5
+    STEP3 --> STEP5
 ```
 
 ---
 
-## 4. Dataset Specifications & Schema
+## 5. Dataset Specifications & Schema
 
 The primary operational dataset (`synthetic_fraud_dataset1.csv`) contains **50,000 transaction records** capturing financial, behavioral, and demographic dimensions.
 
@@ -142,7 +166,7 @@ The primary operational dataset (`synthetic_fraud_dataset1.csv`) contains **50,0
 
 ---
 
-## 5. Data Cleansing & Ingestion Pipeline
+## 6. Data Cleansing & Ingestion Pipeline
 
 The data cleaning module (`src/data_cleaning.py`) guarantees data sanitization and deterministic schema conformation:
 
@@ -153,7 +177,7 @@ The data cleaning module (`src/data_cleaning.py`) guarantees data sanitization a
 
 ---
 
-## 6. Feature Engineering & Mathematical Formulations
+## 7. Feature Engineering & Mathematical Formulations
 
 To maximize the discriminatory power of the Random Forest model, the raw inputs are converted into domain-specific features (`src/feature_engineering.py`):
 
@@ -189,7 +213,7 @@ Categorical string columns are expanded into binary vectors ($k-1$ dummy columns
 
 ---
 
-## 7. Exploratory Data Analysis & Risk Patterns
+## 8. Exploratory Data Analysis & Risk Patterns
 
 The automated EDA script (`src/eda.py`) generates 8 statistical charts rendered at **300 DPI** in `outputs/figures/`:
 
@@ -204,7 +228,7 @@ The automated EDA script (`src/eda.py`) generates 8 statistical charts rendered 
 
 ---
 
-## 8. Machine Learning Model Architecture
+## 9. Machine Learning Model Architecture
 
 The classification core (`src/train_model.py`) utilizes an optimized **Random Forest Classifier**:
 
@@ -232,7 +256,7 @@ Both the trained classifier (`fraud_detection_model.pkl`) and scaler (`scaler.pk
 
 ---
 
-## 9. Quantitative Performance Benchmarks & Validation
+## 10. Quantitative Performance Benchmarks & Validation
 
 The model was evaluated on both an unseen 20% hold-out partition (10,000 transactions) and the complete benchmark dataset (50,000 transactions).
 
@@ -261,25 +285,27 @@ Actual Fraudulent (1)              3,196                    12,871
 
 ---
 
-## 10. Real-Time Inference & Risk Scoring Engine
+## 11. Real-Time Inference & Automated Decision Routing
 
-The inference script (`src/fraud_prediction.py`) demonstrates real-time scoring of incoming transactions:
+Incoming transactions are evaluated through a three-tier risk threshold policy:
 
-```python
-from src.fraud_prediction import predict_sample
-
-# Executes inference on sample transaction and saves output to outputs/prediction_result.csv
-result_df = predict_sample(sample_index=0)
+```mermaid
+flowchart TD
+    INCOMMING["Incoming Transaction Request"] --> PIPELINE["Feature Normalization & Model Inference"]
+    PIPELINE --> PROB{"Computed Fraud Probability (P)"}
+    
+    PROB -->|"P < 30%"| TIER1["Tier 1: Low Risk"]
+    PROB -->|"30% <= P < 70%"| TIER2["Tier 2: Moderate Risk"]
+    PROB -->|"P >= 70%"| TIER3["Tier 3: Critical Risk"]
+    
+    TIER1 --> ACTION1["Action: AUTO-APPROVE<br/>Latency: < 5ms"]
+    TIER2 --> ACTION2["Action: CHALLENGE (2FA / Biometric OTP)<br/>Step-Up Verification"]
+    TIER3 --> ACTION3["Action: IMMEDIATE DECLINE & HOLD<br/>Security Notification Dispatched"]
 ```
-
-### Risk Stratification Policy
-- **Low Risk ($\le 30.00\%$)**: Automatic Authorization and Settlement.
-- **Moderate Risk ($30.01\% - 69.99\%$)**: Secondary Challenge Required (SMS OTP / Biometric 2FA).
-- **Critical Risk ($\ge 70.00\%$)**: Immediate Transaction Hold and Security Team Alert.
 
 ---
 
-## 11. Enterprise Sky Blue Intelligence Dashboard
+## 12. Enterprise Sky Blue Intelligence Dashboard
 
 The Streamlit web application (`dashboard/app.py`) provides an interactive interface featuring an **Enterprise Sky Blue Light Theme**:
 
@@ -324,7 +350,7 @@ streamlit run dashboard/app.py
 
 ---
 
-## 12. CLI Pipeline Orchestration (`main.py`)
+## 13. CLI Pipeline Orchestration (`main.py`)
 
 The pipeline includes a centralized CLI driver with argument parsing for automated workflows:
 
@@ -341,7 +367,7 @@ The pipeline includes a centralized CLI driver with argument parsing for automat
 
 ---
 
-## 13. Installation & Operational Setup
+## 14. Installation & Operational Setup
 
 ### Prerequisites
 - Python 3.10 to 3.13
@@ -375,7 +401,7 @@ streamlit run dashboard/app.py
 
 ---
 
-## 14. REST API Integration Schema
+## 15. REST API Integration Schema
 
 To deploy FraudShield AI behind a FastAPI or Flask microservice endpoint:
 
@@ -415,7 +441,7 @@ To deploy FraudShield AI behind a FastAPI or Flask microservice endpoint:
 
 ---
 
-## 15. Production Deployment & Containerization
+## 16. Production Deployment & Containerization
 
 ### Docker Deployment
 
@@ -451,7 +477,7 @@ docker run -p 8501:8501 fraudshield-ai:latest
 
 ---
 
-## 16. Security, Governance & Compliance
+## 17. Security, Governance & Compliance
 
 - **PCI-DSS Compliance Readiness**: Raw card numbers and sensitive PAN data are never stored; the model uses tokenized card age and categorical types only.
 - **Model Explainability & Auditability**: Every automated classification can be decomposed into Gini feature importance contributions and radar risk vectors for regulatory compliance.
@@ -459,7 +485,7 @@ docker run -p 8501:8501 fraudshield-ai:latest
 
 ---
 
-## 17. Project Directory Hierarchy
+## 18. Project Directory Hierarchy
 
 ```
 ZidioFraudDetection/
@@ -477,7 +503,8 @@ ZidioFraudDetection/
 |   |-- fraud_detection_model.pkl       # Serialized Random Forest classifier
 |   `-- scaler.pkl                      # Serialized StandardScaler
 |-- outputs/
-|   |-- figures/                        # 8 High-resolution (300 DPI) EDA figures
+|   |-- figures/                        # 8 High-resolution (300 DPI) EDA figures + Hero banner
+|   |   |-- hero_banner.jpg
 |   |   |-- account_balance_by_fraud.png
 |   |   |-- daily_transaction_count.png
 |   |   |-- device_type_vs_fraud.png
@@ -506,7 +533,7 @@ ZidioFraudDetection/
 
 ---
 
-## 18. Troubleshooting & Frequently Asked Questions
+## 19. Troubleshooting & Frequently Asked Questions
 
 ### Q1: Why are `.pkl` model files excluded from Git?
 The Random Forest model file is ~321 MB. GitHub enforces a strict 100 MB per-file limit. The pipeline can regenerate model artifacts locally at any time in seconds by executing:
