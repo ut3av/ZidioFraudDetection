@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.py[cod]
+
+# Trained model artifacts are generated locally and exceed GitHub's file limit.
+models/*.pkl
+
+# Runtime outputs and temporary notebook files.
+outputs/predictions/
+src/tempCodeRunnerFile.py
+.ipynb_checkpoints/
