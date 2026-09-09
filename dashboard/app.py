@@ -357,41 +357,46 @@ PLOTLY_LIGHT_TEMPLATE = {
 }
 
 # --------------------------------------------------
-# DATA & ARTIFACT CACHING
+# --------------------------------------------------
+# DATA & ARTIFACT BOOTSTRAPPING & CACHING
 # --------------------------------------------------
 
 MODEL_PATH = Path("models/fraud_detection_model.pkl")
 SCALER_PATH = Path("models/scaler.pkl")
 DATA_PROCESSED_PATH = Path("data/processed/feature_engineered_fraud_data.csv")
+DATA_CLEANED_PATH = Path("data/processed/cleaned_fraud_data.csv")
 DATA_RAW_PATH = Path("data/raw/synthetic_fraud_dataset1.csv")
 
 
-@st.cache_resource
-def get_artifacts():
+@st.cache_resource(show_spinner="Initializing Fraud Detection Model & Feature Matrix...")
+def initialize_system():
+    """
+    Ensures cleaned dataset, engineered features, and trained model artifacts
+    exist locally. Automatically executes fast data preparation & model training
+    on first launch if deployed on clean cloud environments (Streamlit Cloud).
+    """
+    if not DATA_CLEANED_PATH.is_file():
+        from src.data_cleaning import clean_data
+        clean_data()
+
+    if not DATA_PROCESSED_PATH.is_file():
+        from src.feature_engineering import engineer_features
+        engineer_features()
+
     if not MODEL_PATH.is_file() or not SCALER_PATH.is_file():
-        return None, None
-    model = joblib.load(MODEL_PATH)
-    scaler = joblib.load(SCALER_PATH)
-    return model, scaler
+        from src.train_model import train_model
+        model, scaler = train_model()
+    else:
+        model = joblib.load(MODEL_PATH)
+        scaler = joblib.load(SCALER_PATH)
+
+    df_proc = pd.read_csv(DATA_PROCESSED_PATH)
+    df_r = pd.read_csv(DATA_RAW_PATH) if DATA_RAW_PATH.is_file() else None
+
+    return model, scaler, df_proc, df_r
 
 
-@st.cache_data
-def get_processed_data():
-    if DATA_PROCESSED_PATH.is_file():
-        return pd.read_csv(DATA_PROCESSED_PATH)
-    return None
-
-
-@st.cache_data
-def get_raw_data():
-    if DATA_RAW_PATH.is_file():
-        return pd.read_csv(DATA_RAW_PATH)
-    return None
-
-
-model, scaler = get_artifacts()
-df_processed = get_processed_data()
-df_raw = get_raw_data()
+model, scaler, df_processed, df_raw = initialize_system()
 
 # --------------------------------------------------
 # SIDEBAR NAVIGATION
