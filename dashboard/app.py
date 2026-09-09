@@ -361,11 +361,13 @@ PLOTLY_LIGHT_TEMPLATE = {
 # DATA & ARTIFACT BOOTSTRAPPING & CACHING
 # --------------------------------------------------
 
-MODEL_PATH = Path("models/fraud_detection_model.pkl")
-SCALER_PATH = Path("models/scaler.pkl")
-DATA_PROCESSED_PATH = Path("data/processed/feature_engineered_fraud_data.csv")
-DATA_CLEANED_PATH = Path("data/processed/cleaned_fraud_data.csv")
-DATA_RAW_PATH = Path("data/raw/synthetic_fraud_dataset1.csv")
+PROJECT_ROOT = Path(__file__).resolve().parent.parent if Path(__file__).resolve().parent.name == "dashboard" else Path(__file__).resolve().parent
+MODEL_PATH = PROJECT_ROOT / "models" / "fraud_detection_model.pkl"
+SCALER_PATH = PROJECT_ROOT / "models" / "scaler.pkl"
+DATA_PROCESSED_PATH = PROJECT_ROOT / "data" / "processed" / "feature_engineered_fraud_data.csv"
+DATA_CLEANED_PATH = PROJECT_ROOT / "data" / "processed" / "cleaned_fraud_data.csv"
+DATA_RAW_PATH = PROJECT_ROOT / "data" / "raw" / "synthetic_fraud_dataset1.csv"
+FIGURES_DIR = PROJECT_ROOT / "outputs" / "figures"
 
 
 @st.cache_resource(show_spinner="Initializing Fraud Detection Model & Feature Matrix...")
