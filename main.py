@@ -15,15 +15,17 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 
+try:
+    import streamlit as st
+except ImportError:
+    st = None
+
+
 def is_streamlit_running() -> bool:
     """Detect if executed inside a Streamlit runner (e.g. Streamlit Cloud)."""
-    try:
-        import streamlit as st
-        if hasattr(st, "runtime") and hasattr(st.runtime, "exists"):
-            return st.runtime.exists()
-        return False
-    except Exception:
-        return False
+    if st is not None and hasattr(st, "runtime") and hasattr(st.runtime, "exists"):
+        return st.runtime.exists()
+    return False
 
 
 if is_streamlit_running():
